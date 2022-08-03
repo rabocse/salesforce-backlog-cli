@@ -11,6 +11,16 @@ import (
 	"strings"
 )
 
+/* This is an example of the current execution:
+
+❯ ./main -user=$NAME -pass=$PASS -sf=$SF -clid=$CLID -clse=$CLSE -seck=$SECK
+{"error":"unsupported_grant_type","error_description":"grant type not supported"}
+
+The above error is expected, this is a work in progress.
+Also, at this moment this is no more than a Proof of Concept, meaning that the final execution might be and look completely different.
+
+*/
+
 const method string = "POST"
 
 // flagsHander parses the flags passed by the user via CLI
