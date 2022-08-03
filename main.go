@@ -7,18 +7,23 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"net/url"
+	"strings"
 )
 
 const method string = "POST"
 
 // flagsHander parses the flags passed by the user via CLI
-func flagsHandler() (s, u, p string) {
+func flagsHandler() (s, u, p, ci, cs, sk string) {
 
 	// Requesting flags to user via CLI.
 	// NOTE: flag.String returns a pointer.
 	sfi := flag.String("sf", " ", "Salesforce Instance, e.g  https://mycompany.salesforce.com")
 	user := flag.String("user", " ", "Salesforce Username, e.g rabocse@mycompany.com")
 	pass := flag.String("pass", " ", "Salesforce Password, e.g mysecurefakepassword123")
+	clid := flag.String("clid", " ", "Salesforce Client ID (This should be provided by your Salesforce Admin)")
+	clse := flag.String("clse", " ", "Salesforce Client Secret (This should be provided by your Salesforce Admin)")
+	seck := flag.String("seck", " ", "Salesforce Security Key (This should be provided by your Salesforce Admin)")
 
 	// Execute the command-line parsing
 	flag.Parse()
@@ -27,8 +32,11 @@ func flagsHandler() (s, u, p string) {
 	s = *sfi
 	u = *user
 	p = *pass
+	ci = *clid
+	cs = *clse
+	sk = *seck
 
-	return s, u, p
+	return s, u, p, ci, cs, sk
 
 }
 
@@ -46,20 +54,30 @@ func buildURL(salesforceInstance string) string {
 }
 
 // craftPayload prepares the credentials to be added as payload to a valid HTTP(s) request.
-func craftPayload(userValue, passwordValue string) io.Reader { //TODO: Modify this function to prepare the body of the request. At the end, an io.Reader needs to be returnedt so it can be processed by next function (http.NewRequest)
+func craftPayload(userValue, passwordValue, clientIDvalue, clientSecretvalue, securityKeyvalue string) io.Reader { //TODO: Modify this function to prepare the body of the request. At the end, an io.Reader needs to be returnedt so it can be processed by next function (http.NewRequest)
 
-	type credentials struct {
+	c := struct {
 		Username     string
 		Password     string
+		GrantType    string
 		ClientID     string
 		ClientSecret string
 		SecurityKey  string
+	}{
+		Username:     userValue,
+		Password:     passwordValue,
+		GrantType:    "password",
+		ClientID:     clientIDvalue,
+		ClientSecret: clientSecretvalue,
+		SecurityKey:  securityKeyvalue,
 	}
 
 	// Concatenate to build the payload
-	// concatenatedPayload := fmt.Sprintf("%s%s%s", protocol, salesforceInstance, resource) // concatenatedPayload is a string
+	concatenatedPayload := fmt.Sprintf("grant_type=%s&client_id=%s&client_secret=%s&username=%s&password=%s%s", c.GrantType, c.ClientID, c.ClientSecret, c.Username, c.Password, c.SecurityKey) // concatenatedPayload is a string (non encoded)
 
-	// payload := strings.NewReader("grant_type=xxxxxxxxx&client_id=xxxxxxxxxxxxxxxxx&client_secret=xxxxxxxxxxxxxxxxxx=rabocse%40mycompany.com&password=myfakepassword123myfakesecurityId") // Do I need string.NewReader?
+	encodedPayload := url.QueryEscape(concatenatedPayload)
+
+	p := strings.NewReader(encodedPayload)
 
 	// convertedconcatenatedPayload := []byte(concatenatedPayload) // now concatenatedPayload is a slice of Bytes called convertedconcatenatedPayload
 
@@ -115,13 +133,13 @@ func sendRequest(r *http.Request) string {
 func main() {
 
 	// Values are passed via CLI
-	salesforceInstance, username, password := flagsHandler()
+	salesforceInstance, username, password, clientID, clientSecret, SecurityKey := flagsHandler()
 
 	// Cluster URL is built.
 	url := buildURL(salesforceInstance)
 
 	// Credentials are parsed to be payload.
-	payload := craftPayload(username, password) // <==== Currently working on this function.
+	payload := craftPayload(username, password, clientID, clientSecret, SecurityKey) // <==== Currently working on this function.
 
 	// Crafting a valid HTTPS request with TLS ignore.
 	req := craftRequest(method, url, payload)
