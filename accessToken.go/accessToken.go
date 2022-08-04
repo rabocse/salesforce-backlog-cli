@@ -65,7 +65,7 @@ func buildSFURL(salesforceInstance string) string {
 
 	// Define the components for the HTTP Request.
 	const protocol string = "https://"
-	const resource string = "/services/data/v55.0/sobjects/case"
+	const resource string = "/services/data/v55.0/sobjects/case" // TODO: This is the resource to modify depending on what needs to be downloaded. For the time being, backlog cases.
 
 	// Concatenate to build the URL
 	url := fmt.Sprintf("%s%s%s", protocol, salesforceInstance, resource)
@@ -188,10 +188,11 @@ func main() {
 	fmt.Println()
 	fmt.Println(accessToken)
 
-	backlogURL := buildSFURL(salesforceInstance)
+	backlogURL := buildSFURL(salesforceInstance) // TODO: Next... I need to take the backlogURL and craft the request with the new payload for such.
 
 	// Printing the backlog URL
 	fmt.Println()
 	fmt.Println(backlogURL)
 
+	// TODO: The amount of functions are getting doubled. Refactor will be needed to shorten the source code.
 }
