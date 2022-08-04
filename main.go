@@ -7,17 +7,13 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
-	"net/url"
 	"strings"
 )
 
-/* This is an example of the current execution:
+/* The current execution is succesful:
 
 ❯ ./main -user=$NAME -pass=$PASS -sf=$SF -clid=$CLID -clse=$CLSE -seck=$SECK
-{"error":"unsupported_grant_type","error_description":"grant type not supported"}
-
-The above error is expected, this is a work in progress.
-Also, at this moment this is no more than a Proof of Concept, meaning that the final execution might be and look completely different.
+[Ommited output due confidentialy of info]
 
 */
 
@@ -64,7 +60,7 @@ func buildURL(salesforceInstance string) string {
 }
 
 // craftPayload prepares the credentials to be added as payload to a valid HTTP(s) request.
-func craftPayload(userValue, passwordValue, clientIDvalue, clientSecretvalue, securityKeyvalue string) io.Reader { //TODO: Modify this function to prepare the body of the request. At the end, an io.Reader needs to be returnedt so it can be processed by next function (http.NewRequest)
+func craftPayload(userValue, passwordValue, clientIDvalue, clientSecretvalue, securityKeyvalue string) io.Reader {
 
 	c := struct {
 		Username     string
@@ -85,13 +81,8 @@ func craftPayload(userValue, passwordValue, clientIDvalue, clientSecretvalue, se
 	// Concatenate to build the payload
 	concatenatedPayload := fmt.Sprintf("grant_type=%s&client_id=%s&client_secret=%s&username=%s&password=%s%s", c.GrantType, c.ClientID, c.ClientSecret, c.Username, c.Password, c.SecurityKey) // concatenatedPayload is a string (non encoded)
 
-	encodedPayload := url.QueryEscape(concatenatedPayload)
-
-	p := strings.NewReader(encodedPayload)
-
-	// convertedconcatenatedPayload := []byte(concatenatedPayload) // now concatenatedPayload is a slice of Bytes called convertedconcatenatedPayload
-
-	// p := bytes.NewReader(convertedconcatenatedPayload) // so convertedconcatenatedPayload needs to be converted io.Reader to be accepted by next function (http.NewRequest)
+	// Convert to *strings.Reader
+	p := strings.NewReader(concatenatedPayload)
 
 	return p
 }
@@ -107,7 +98,7 @@ func craftRequest(m string, u string, p io.Reader) *http.Request {
 	}
 
 	// Header to specify that our request sends plain text format.
-	req.Header.Add("Content-Type", "text/plain")
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 
 	return req
 
