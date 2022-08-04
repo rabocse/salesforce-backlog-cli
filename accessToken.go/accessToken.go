@@ -60,6 +60,19 @@ func buildAuthURL(salesforceInstance string) string {
 	return url
 }
 
+//  buildURL returns a valid string URL
+func buildSFURL(salesforceInstance string) string {
+
+	// Define the components for the HTTP Request.
+	const protocol string = "https://"
+	const resource string = "/services/data/v55.0/sobjects/case"
+
+	// Concatenate to build the URL
+	url := fmt.Sprintf("%s%s%s", protocol, salesforceInstance, resource)
+
+	return url
+}
+
 // craftPayload prepares the credentials to be added as payload to a valid HTTP(s) request.
 func craftPayload(userValue, passwordValue, clientIDvalue, clientSecretvalue, securityKeyvalue string) io.Reader {
 
@@ -174,4 +187,11 @@ func main() {
 	// Printing the authentication token value
 	fmt.Println()
 	fmt.Println(accessToken)
+
+	backlogURL := buildSFURL(salesforceInstance)
+
+	// Printing the backlog URL
+	fmt.Println()
+	fmt.Println(backlogURL)
+
 }
