@@ -48,7 +48,7 @@ func envHandler() (sfi, user, pass, clid, clse, seck string) {
 }
 
 //  buildURL returns a valid string URL
-func buildURL(salesforceInstance string) string {
+func buildAuthURL(salesforceInstance string) string {
 
 	// Define the components for the HTTP Request.
 	const protocol string = "https://"
@@ -158,13 +158,13 @@ func main() {
 	salesforceInstance, username, password, clientID, clientSecret, SecurityKey := envHandler()
 
 	// Builds Salesforce URL
-	url := buildURL(salesforceInstance)
+	authURL := buildAuthURL(salesforceInstance)
 
 	// Credentials are parsed to be payload.
 	payload := craftPayload(username, password, clientID, clientSecret, SecurityKey)
 
 	// Crafting a valid HTTPS request with TLS ignore.
-	req := craftRequest(method, url, payload)
+	req := craftRequest(method, authURL, payload)
 
 	// Sending the request and getting a valid server response
 	response := sendRequest(req)
