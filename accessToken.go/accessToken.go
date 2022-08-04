@@ -2,29 +2,51 @@ package main
 
 import (
 	"crypto/tls"
-	"flag"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"strings"
 )
 
-/* The current execution is succesful:
+/*
 
-❯ ./main -user=$NAME -pass=$PASS -sf=$SF -clid=$CLID -clse=$CLSE -seck=$SECK
+The current execution is succesful. First the user must set the expected enviroment variables on the local terminal. For example:
+
+---
+❯ export EMAIL=rabocse@mydomain.com
+export PASS=MyFakePassword123
+export SF=myfake.sf.instance.salesforce.com
+export CLID=xxxxxxxyyyyyyyyyyaaaaaaabbbbbbbbdddddddddddd22211111
+export CLSE=11111112222222333333344444aaaaaccccc1112222222
+export SECK=BAD23XXXXXXXXFFF
+---
+
+And then proceed to execute:
+
+❯ ./accessToken
 [Ommited output due confidentialy of info]
 
 */
 
 const method string = "POST"
 
-func envHandler() (s, u, p, ci, cs, sk string) { // TODO: To replace flagsHandler.
+func envHandler() (sfi, user, pass, clid, clse, seck string) { // TODO: To replace flagsHandler.
 
-	// envHandler logic
+	// Get needed enviroment variables: EMAIL, PASS, SF, CLID, CLSE, SECK.
+	sfi = os.Getenv("SF")
+	user = os.Getenv("EMAIL")
+	pass = os.Getenv("PASS")
+	clid = os.Getenv("CLID")
+	clse = os.Getenv("CLSE")
+	seck = os.Getenv("SECK")
+
+	return sfi, user, pass, clid, clse, seck
 
 }
 
+/*
 // flagsHander parses the flags passed by the user via CLI
 func flagsHandler() (s, u, p, ci, cs, sk string) { // TODO: Replace this flagsHandler with envHandler.
 
@@ -51,6 +73,7 @@ func flagsHandler() (s, u, p, ci, cs, sk string) { // TODO: Replace this flagsHa
 	return s, u, p, ci, cs, sk
 
 }
+*/
 
 //  buildURL returns a valid string URL
 func buildURL(salesforceInstance string) string {
@@ -140,7 +163,7 @@ func sendRequest(r *http.Request) string {
 func main() {
 
 	// Values are passed via CLI
-	salesforceInstance, username, password, clientID, clientSecret, SecurityKey := flagsHandler() // TODO: Replace this flagsHandler with envHandler.
+	salesforceInstance, username, password, clientID, clientSecret, SecurityKey := envHandler() // TODO: Replace this flagsHandler with envHandler.
 
 	// Builds Salesforce URL
 	url := buildURL(salesforceInstance)
