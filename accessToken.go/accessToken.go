@@ -19,8 +19,14 @@ import (
 
 const method string = "POST"
 
+func envHandler() (s, u, p, ci, cs, sk string) { // TODO: To replace flagsHandler.
+
+	// envHandler logic
+
+}
+
 // flagsHander parses the flags passed by the user via CLI
-func flagsHandler() (s, u, p, ci, cs, sk string) {
+func flagsHandler() (s, u, p, ci, cs, sk string) { // TODO: Replace this flagsHandler with envHandler.
 
 	// Requesting flags to user via CLI.
 	// NOTE: flag.String returns a pointer.
@@ -134,7 +140,7 @@ func sendRequest(r *http.Request) string {
 func main() {
 
 	// Values are passed via CLI
-	salesforceInstance, username, password, clientID, clientSecret, SecurityKey := flagsHandler()
+	salesforceInstance, username, password, clientID, clientSecret, SecurityKey := flagsHandler() // TODO: Replace this flagsHandler with envHandler.
 
 	// Builds Salesforce URL
 	url := buildURL(salesforceInstance)
