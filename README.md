@@ -12,6 +12,7 @@ accessToken.go successfully requests an access token to the Salesforce Instace:
 
 ## Next Steps
 
+- Input for the script to be accepted via enviroment variables. (Seems more suitable)
 - Parse JSON output and extract only the "access token" value.
 - Pass the access token value to next section of the script. (To download the backlog)
 
