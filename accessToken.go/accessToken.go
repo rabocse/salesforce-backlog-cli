@@ -2,6 +2,7 @@ package main
 
 import (
 	"crypto/tls"
+	"encoding/json"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -131,6 +132,26 @@ func sendRequest(r *http.Request) string {
 
 }
 
+func extractAuthToken(r string) string {
+
+	type response struct {
+		AccessToken string `json:"access_token"`
+		InstanceURL string `json:"instance_url"`
+		Id          string `json:"id"`
+		TokenType   string `json:"token_type"`
+		IssuedAt    string `json:"issued_at"`
+		Signature   string `json:"signature"`
+	}
+
+	rByte := []byte(r)
+
+	var serverResponse response
+	json.Unmarshal(rByte, &serverResponse)
+
+	return serverResponse.AccessToken
+
+}
+
 func main() {
 
 	// Values are passed via CLI
@@ -145,9 +166,12 @@ func main() {
 	// Crafting a valid HTTPS request with TLS ignore.
 	req := craftRequest(method, url, payload)
 
-	// Sending the request and getting a valid authToken
-	authToken := sendRequest(req)
+	// Sending the request and getting a valid server response
+	response := sendRequest(req)
 
-	// Printing the authentication token
-	fmt.Println(authToken)
+	accessToken := extractAuthToken(response)
+
+	// Printing the authentication token value
+	fmt.Println()
+	fmt.Println(accessToken)
 }
