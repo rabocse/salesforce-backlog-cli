@@ -32,7 +32,7 @@ And then proceed to execute:
 
 const method string = "POST"
 
-func envHandler() (sfi, user, pass, clid, clse, seck string) { // TODO: To replace flagsHandler.
+func envHandler() (sfi, user, pass, clid, clse, seck string) {
 
 	// Get needed enviroment variables: EMAIL, PASS, SF, CLID, CLSE, SECK.
 	sfi = os.Getenv("SF")
@@ -45,35 +45,6 @@ func envHandler() (sfi, user, pass, clid, clse, seck string) { // TODO: To repla
 	return sfi, user, pass, clid, clse, seck
 
 }
-
-/*
-// flagsHander parses the flags passed by the user via CLI
-func flagsHandler() (s, u, p, ci, cs, sk string) { // TODO: Replace this flagsHandler with envHandler.
-
-	// Requesting flags to user via CLI.
-	// NOTE: flag.String returns a pointer.
-	sfi := flag.String("sf", " ", "Salesforce Instance, e.g  https://mycompany.salesforce.com")
-	user := flag.String("user", " ", "Salesforce Username, e.g rabocse@mycompany.com")
-	pass := flag.String("pass", " ", "Salesforce Password, e.g mysecurefakepassword123")
-	clid := flag.String("clid", " ", "Salesforce Client ID (This should be provided by your Salesforce Admin)")
-	clse := flag.String("clse", " ", "Salesforce Client Secret (This should be provided by your Salesforce Admin)")
-	seck := flag.String("seck", " ", "Salesforce Security Key (This should be provided by your Salesforce Admin)")
-
-	// Execute the command-line parsing
-	flag.Parse()
-
-	// Convert the string pointer to a string
-	s = *sfi
-	u = *user
-	p = *pass
-	ci = *clid
-	cs = *clse
-	sk = *seck
-
-	return s, u, p, ci, cs, sk
-
-}
-*/
 
 //  buildURL returns a valid string URL
 func buildURL(salesforceInstance string) string {
@@ -163,7 +134,7 @@ func sendRequest(r *http.Request) string {
 func main() {
 
 	// Values are passed via CLI
-	salesforceInstance, username, password, clientID, clientSecret, SecurityKey := envHandler() // TODO: Replace this flagsHandler with envHandler.
+	salesforceInstance, username, password, clientID, clientSecret, SecurityKey := envHandler()
 
 	// Builds Salesforce URL
 	url := buildURL(salesforceInstance)
