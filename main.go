@@ -136,11 +136,11 @@ func main() {
 	// Values are passed via CLI
 	salesforceInstance, username, password, clientID, clientSecret, SecurityKey := flagsHandler()
 
-	// Cluster URL is built.
+	// Builds Salesforce URL
 	url := buildURL(salesforceInstance)
 
 	// Credentials are parsed to be payload.
-	payload := craftPayload(username, password, clientID, clientSecret, SecurityKey) // <==== Currently working on this function.
+	payload := craftPayload(username, password, clientID, clientSecret, SecurityKey)
 
 	// Crafting a valid HTTPS request with TLS ignore.
 	req := craftRequest(method, url, payload)
