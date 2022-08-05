@@ -73,7 +73,7 @@ func buildURL(salesforceInstance string, resource int) string {
 
 	}
 
-	invalidResource := fmt.Sprintf("The specified resource (%d) did not match any available option.", resource)
+	invalidResource := fmt.Sprintf("ERROR: The specified resource (%d) did not match any available option.", resource)
 
 	return invalidResource
 }
@@ -193,7 +193,7 @@ func main() {
 	fmt.Println()
 	fmt.Println(accessToken)
 
-	backlogURL := buildURL(salesforceInstance, 2) // TODO: Next... I need to take the backlogURL and craft the request with the new payload for such.
+	backlogURL := buildURL(salesforceInstance, 3) // TODO: Next... I need to take the backlogURL and craft the request with the new payload for such.
 
 	// Printing the backlog URL
 	fmt.Println()
