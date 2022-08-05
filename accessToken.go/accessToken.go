@@ -118,6 +118,8 @@ func craftPayload(userValue, passwordValue, clientIDvalue, clientSecretvalue, se
 
 }
 
+/*
+
 // craftRequest prepares a valid HTTP request with a POST method and the specified URL and payload.
 func craftRequest(m string, u string, p io.Reader) *http.Request {
 
@@ -132,6 +134,58 @@ func craftRequest(m string, u string, p io.Reader) *http.Request {
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 
 	return req
+
+}
+
+
+*/
+
+// craftRequest crafts a valid HTTP request with the passed http.Method, url(u), token(t) and payload(p).
+func craftRequest(m string, u string, t string, p io.Reader) *http.Request {
+
+	var requestPurpose string = m
+
+	switch requestPurpose {
+
+	case "POST":
+
+		if t == "no-token" { // POST for Authentication
+
+			// Build the request (req) with the previous components
+			req, err := http.NewRequest(m, u, p)
+
+			if err != nil {
+				fmt.Println(err)
+			}
+
+			// Header to specify that our request sends urlencoded format.
+			req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+
+			return req
+
+		} else { // POST for Writing Operation
+
+			fmt.Println("Writing Operations are not supported yet. Feel free to contribute at https://github.com/rabocse/salesforce-backlog-cli   :)")
+
+		}
+
+	case "GET":
+
+		// Build the request (req) with the previous components
+		req, err := http.NewRequest(m, u, p)
+
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		// Header to specify that our request sends urlencoded format.
+		req.Header.Add("Authorization", t)
+
+		return req
+
+	}
+
+	return nil
 
 }
 
@@ -194,7 +248,7 @@ func main() {
 	authPayload := craftPayload(username, password, clientID, clientSecret, SecurityKey, "auth")
 
 	// Crafting a valid HTTPS request with TLS ignore.
-	authReq := craftRequest(http.MethodPost, authURL, authPayload)
+	authReq := craftRequest(http.MethodPost, authURL, "no-token", authPayload)
 
 	// Sending the request and getting a valid server response
 	response := sendRequest(authReq)
