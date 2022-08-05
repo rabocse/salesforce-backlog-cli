@@ -31,8 +31,6 @@ And then proceed to execute:
 
 */
 
-const method string = "POST"
-
 func envHandler() (sfi, user, pass, clid, clse, seck string) {
 
 	// Get needed enviroment variables: EMAIL, PASS, SF, CLID, CLSE, SECK.
@@ -196,7 +194,7 @@ func main() {
 	authPayload := craftPayload(username, password, clientID, clientSecret, SecurityKey, "auth")
 
 	// Crafting a valid HTTPS request with TLS ignore.
-	req := craftRequest(method, authURL, authPayload)
+	req := craftRequest(http.MethodPost, authURL, authPayload)
 
 	// Sending the request and getting a valid server response
 	response := sendRequest(req)
