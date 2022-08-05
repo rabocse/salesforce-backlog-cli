@@ -47,36 +47,6 @@ func envHandler() (sfi, user, pass, clid, clse, seck string) {
 
 }
 
-/*
-
-//  buildURL returns a valid string URL
-func buildAuthURL(salesforceInstance string) string {
-
-	// Define the components for the HTTP Request.
-	const protocol string = "https://"
-	const resource string = "/services/oauth2/token"
-
-	// Concatenate to build the URL
-	url := fmt.Sprintf("%s%s%s", protocol, salesforceInstance, resource)
-
-	return url
-}
-
-//  buildURL returns a valid string URL
-func buildSFURL(salesforceInstance string) string {
-
-	// Define the components for the HTTP Request.
-	const protocol string = "https://"
-	const resource string = "/services/data/v55.0/sobjects/case" // TODO: This is the resource to modify depending on what needs to be downloaded. For the time being, backlog cases.
-
-	// Concatenate to build the URL
-	url := fmt.Sprintf("%s%s%s", protocol, salesforceInstance, resource)
-
-	return url
-}
-
-*/
-
 // buildURL builds any URL resource (API resource). No need of duplicate functions per each resource.
 func buildURL(salesforceInstance string, resource int) string {
 
