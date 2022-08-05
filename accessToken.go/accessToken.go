@@ -232,8 +232,9 @@ func extractAuthToken(r string) string {
 	var serverResponse response
 	json.Unmarshal(rByte, &serverResponse)
 
-	return serverResponse.AccessToken
+	token := fmt.Sprintf("Bearer %s", serverResponse.AccessToken)
 
+	return token
 }
 
 func main() {
@@ -255,15 +256,7 @@ func main() {
 
 	accessToken := extractAuthToken(authResponse)
 
-	// Printing the authentication token value
-	fmt.Println()
-	fmt.Println(accessToken) // TODO: Remove this print. In the meantime is only for developing process. This shows that the Authentication is working.
-
 	casesURL := buildURL(salesforceInstance, 2)
-
-	// Printing the backlog URL
-	fmt.Println()
-	fmt.Println(casesURL)
 
 	casesReq := craftRequest(http.MethodGet, casesURL, accessToken, nil)
 
