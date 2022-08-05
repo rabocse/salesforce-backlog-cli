@@ -47,6 +47,8 @@ func envHandler() (sfi, user, pass, clid, clse, seck string) {
 
 }
 
+/*
+
 //  buildURL returns a valid string URL
 func buildAuthURL(salesforceInstance string) string {
 
@@ -71,6 +73,39 @@ func buildSFURL(salesforceInstance string) string {
 	url := fmt.Sprintf("%s%s%s", protocol, salesforceInstance, resource)
 
 	return url
+}
+
+*/
+
+// buildURL builds any URL resource (API resource). No need of duplicate functions per each resource.
+func buildURL(salesforceInstance string, resource int) string {
+
+	const protocol string = "https://"
+	var apiResources int = resource
+
+	switch apiResources {
+
+	case 1:
+
+		const resource string = "/services/oauth2/token"
+		// Concatenate to build the URL
+		url := fmt.Sprintf("%s%s%s", protocol, salesforceInstance, resource)
+		return url
+
+	case 2:
+
+		const resource string = "/services/data/v55.0/sobjects/case"
+
+		// Concatenate to build the URL
+		url := fmt.Sprintf("%s%s%s", protocol, salesforceInstance, resource)
+
+		return url
+
+	}
+
+	invalidResource := fmt.Sprintf("The specified resource (%d) did not match any available option.", resource)
+
+	return invalidResource
 }
 
 // craftPayload prepares the credentials to be added as payload to a valid HTTP(s) request.
@@ -171,7 +206,7 @@ func main() {
 	salesforceInstance, username, password, clientID, clientSecret, SecurityKey := envHandler()
 
 	// Builds Salesforce URL
-	authURL := buildAuthURL(salesforceInstance)
+	authURL := buildURL(salesforceInstance, 1)
 
 	// Credentials are parsed to be payload.
 	payload := craftPayload(username, password, clientID, clientSecret, SecurityKey)
@@ -188,7 +223,7 @@ func main() {
 	fmt.Println()
 	fmt.Println(accessToken)
 
-	backlogURL := buildSFURL(salesforceInstance) // TODO: Next... I need to take the backlogURL and craft the request with the new payload for such.
+	backlogURL := buildURL(salesforceInstance, 2) // TODO: Next... I need to take the backlogURL and craft the request with the new payload for such.
 
 	// Printing the backlog URL
 	fmt.Println()
