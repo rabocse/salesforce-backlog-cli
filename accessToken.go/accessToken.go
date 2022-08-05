@@ -111,7 +111,7 @@ func craftRequest(m string, u string, p io.Reader) *http.Request {
 		fmt.Println(err)
 	}
 
-	// Header to specify that our request sends plain text format.
+	// Header to specify that our request sends urlencoded format.
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 
 	return req
