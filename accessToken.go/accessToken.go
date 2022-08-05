@@ -78,32 +78,46 @@ func buildURL(salesforceInstance string, resource int) string {
 	return invalidResource
 }
 
-// craftPayload prepares the credentials to be added as payload to a valid HTTP(s) request.
-func craftPayload(userValue, passwordValue, clientIDvalue, clientSecretvalue, securityKeyvalue string) io.Reader {
+func craftPayload(userValue, passwordValue, clientIDvalue, clientSecretvalue, securityKeyvalue string, purpose string) io.Reader {
 
-	c := struct {
-		Username     string
-		Password     string
-		GrantType    string
-		ClientID     string
-		ClientSecret string
-		SecurityKey  string
-	}{
-		Username:     userValue,
-		Password:     passwordValue,
-		GrantType:    "password",
-		ClientID:     clientIDvalue,
-		ClientSecret: clientSecretvalue,
-		SecurityKey:  securityKeyvalue,
+	var payloadPurpose string = purpose
+
+	switch payloadPurpose {
+
+	case "auth":
+
+		c := struct {
+			Username     string
+			Password     string
+			GrantType    string
+			ClientID     string
+			ClientSecret string
+			SecurityKey  string
+		}{
+			Username:     userValue,
+			Password:     passwordValue,
+			GrantType:    "password",
+			ClientID:     clientIDvalue,
+			ClientSecret: clientSecretvalue,
+			SecurityKey:  securityKeyvalue,
+		}
+
+		// Concatenate to build the payload
+		concatenatedPayload := fmt.Sprintf("grant_type=%s&client_id=%s&client_secret=%s&username=%s&password=%s%s", c.GrantType, c.ClientID, c.ClientSecret, c.Username, c.Password, c.SecurityKey) // concatenatedPayload is a string (non encoded)
+
+		// Convert to *strings.Reader
+		p := strings.NewReader(concatenatedPayload)
+
+		return p
+
+	case "crud":
+
+		// For future CRUD operations.
+
 	}
 
-	// Concatenate to build the payload
-	concatenatedPayload := fmt.Sprintf("grant_type=%s&client_id=%s&client_secret=%s&username=%s&password=%s%s", c.GrantType, c.ClientID, c.ClientSecret, c.Username, c.Password, c.SecurityKey) // concatenatedPayload is a string (non encoded)
+	return nil // At this point, "auth" must be the only purpose specified, the authentication is the only carrying payload.
 
-	// Convert to *strings.Reader
-	p := strings.NewReader(concatenatedPayload)
-
-	return p
 }
 
 // craftRequest prepares a valid HTTP request with a POST method and the specified URL and payload.
@@ -179,10 +193,10 @@ func main() {
 	authURL := buildURL(salesforceInstance, 1)
 
 	// Credentials are parsed to be payload.
-	payload := craftPayload(username, password, clientID, clientSecret, SecurityKey)
+	authPayload := craftPayload(username, password, clientID, clientSecret, SecurityKey, "auth")
 
 	// Crafting a valid HTTPS request with TLS ignore.
-	req := craftRequest(method, authURL, payload)
+	req := craftRequest(method, authURL, authPayload)
 
 	// Sending the request and getting a valid server response
 	response := sendRequest(req)
@@ -193,7 +207,7 @@ func main() {
 	fmt.Println()
 	fmt.Println(accessToken)
 
-	backlogURL := buildURL(salesforceInstance, 3) // TODO: Next... I need to take the backlogURL and craft the request with the new payload for such.
+	backlogURL := buildURL(salesforceInstance, 2) // TODO: Next... I need to take the backlogURL and craft the request with the new payload for such.
 
 	// Printing the backlog URL
 	fmt.Println()
