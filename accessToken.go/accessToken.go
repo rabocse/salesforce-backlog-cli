@@ -251,9 +251,9 @@ func main() {
 	authReq := craftRequest(http.MethodPost, authURL, "no-token", authPayload)
 
 	// Sending the request and getting a valid server response
-	response := sendRequest(authReq)
+	authResponse := sendRequest(authReq)
 
-	accessToken := extractAuthToken(response)
+	accessToken := extractAuthToken(authResponse)
 
 	// Printing the authentication token value
 	fmt.Println()
