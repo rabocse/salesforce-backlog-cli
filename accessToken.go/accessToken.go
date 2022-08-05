@@ -257,13 +257,19 @@ func main() {
 
 	// Printing the authentication token value
 	fmt.Println()
-	fmt.Println(accessToken)
+	fmt.Println(accessToken) // TODO: Remove this print. In the meantime is only for developing process. This shows that the Authentication is working.
 
-	backlogURL := buildURL(salesforceInstance, 2) // TODO: Next... I need to take the backlogURL and craft the request with the new payload for such.
+	casesURL := buildURL(salesforceInstance, 2)
 
 	// Printing the backlog URL
 	fmt.Println()
-	fmt.Println(backlogURL)
+	fmt.Println(casesURL)
 
-	// TODO: The amount of functions are getting doubled. Refactor will be needed to shorten the source code.
+	casesReq := craftRequest(http.MethodGet, casesURL, accessToken, nil)
+
+	casesResponse := sendRequest(casesReq)
+
+	fmt.Println()
+	fmt.Println(casesResponse)
+
 }
