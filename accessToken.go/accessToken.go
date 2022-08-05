@@ -194,10 +194,10 @@ func main() {
 	authPayload := craftPayload(username, password, clientID, clientSecret, SecurityKey, "auth")
 
 	// Crafting a valid HTTPS request with TLS ignore.
-	req := craftRequest(http.MethodPost, authURL, authPayload)
+	authReq := craftRequest(http.MethodPost, authURL, authPayload)
 
 	// Sending the request and getting a valid server response
-	response := sendRequest(req)
+	response := sendRequest(authReq)
 
 	accessToken := extractAuthToken(response)
 
