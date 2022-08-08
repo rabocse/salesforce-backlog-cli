@@ -66,8 +66,8 @@ func buildURL(salesforceInstance string, resource int) string {
 		return url
 
 	case 2:
-
-		const resource string = "/services/data/v55.0/sobjects/case"
+		// Resource: listview called "My Cases"
+		const resource string = "/services/data/v55.0/sobjects/case/listviews/00BE0000004x68gMAA/results"
 
 		// Concatenate to build the URL
 		url := fmt.Sprintf("%s%s%s", protocol, salesforceInstance, resource)
