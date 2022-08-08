@@ -26,14 +26,19 @@ export SECK=BAD23XXXXXXXXFFF
 
 And then proceed to execute:
 
-❯ ./accessToken
-[Ommited output due confidentialy of info]
+❯ ./accessToken | jq .recentItems | grep -i CaseNUmber
+    "CaseNumber": "1234567"
+    "CaseNumber": "8910111"
+    "CaseNumber": "1213141"
+    "CaseNumber": "5161718"
+    "CaseNumber": "1920212"
+    "CaseNumber": "2232425"
 
 */
 
+// envHandler gets the needed enviroment variables: EMAIL, PASS, SF, CLID, CLSE, SECK.
 func envHandler() (sfi, user, pass, clid, clse, seck string) {
 
-	// Get needed enviroment variables: EMAIL, PASS, SF, CLID, CLSE, SECK.
 	sfi = os.Getenv("SF")
 	user = os.Getenv("EMAIL")
 	pass = os.Getenv("PASS")
@@ -76,6 +81,7 @@ func buildURL(salesforceInstance string, resource int) string {
 	return invalidResource
 }
 
+// craftPayload prepares the payload used in the http requests.
 func craftPayload(userValue, passwordValue, clientIDvalue, clientSecretvalue, securityKeyvalue string, purpose string) io.Reader {
 
 	var payloadPurpose string = purpose
@@ -117,28 +123,6 @@ func craftPayload(userValue, passwordValue, clientIDvalue, clientSecretvalue, se
 	return nil // At this point, "auth" must be the only purpose specified, the authentication is the only carrying payload.
 
 }
-
-/*
-
-// craftRequest prepares a valid HTTP request with a POST method and the specified URL and payload.
-func craftRequest(m string, u string, p io.Reader) *http.Request {
-
-	// Build the request (req) with the previous components
-	req, err := http.NewRequest(m, u, p)
-
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	// Header to specify that our request sends urlencoded format.
-	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-
-	return req
-
-}
-
-
-*/
 
 // craftRequest crafts a valid HTTP request with the passed http.Method, url(u), token(t) and payload(p).
 func craftRequest(m string, u string, t string, p io.Reader) *http.Request {
@@ -216,6 +200,7 @@ func sendRequest(r *http.Request) string {
 
 }
 
+// extractAuthToken extracts the access_token value from the response sent by the server
 func extractAuthToken(r string) string {
 
 	type response struct {
@@ -239,27 +224,31 @@ func extractAuthToken(r string) string {
 
 func main() {
 
-	// Values are passed via CLI
+	// Getting the credentials for authentication via enviroment variables.
 	salesforceInstance, username, password, clientID, clientSecret, SecurityKey := envHandler()
 
-	// Builds Salesforce URL
+	// Building Salesforce URL for authentication purposes.
 	authURL := buildURL(salesforceInstance, 1)
 
-	// Credentials are parsed to be payload.
+	// Parsing the credentials.
 	authPayload := craftPayload(username, password, clientID, clientSecret, SecurityKey, "auth")
 
-	// Crafting a valid HTTPS request with TLS ignore.
+	// Crafting a valid HTTPS request with TLS ignore for authentication.
 	authReq := craftRequest(http.MethodPost, authURL, "no-token", authPayload)
 
-	// Sending the request and getting a valid server response
+	// Sending the request and getting a valid server response for authentication.
 	authResponse := sendRequest(authReq)
 
+	// Extracting the access token value from the server response.
 	accessToken := extractAuthToken(authResponse)
 
+	// Building the URL to query the data.
 	casesURL := buildURL(salesforceInstance, 2)
 
+	// Crafting a valid HTTPS request with TLS ignore.
 	casesReq := craftRequest(http.MethodGet, casesURL, accessToken, nil)
 
+	// Sending the request and getting a valid server response.
 	casesResponse := sendRequest(casesReq)
 
 	fmt.Println()
