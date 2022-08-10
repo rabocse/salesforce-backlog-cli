@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"reflect"
 	"strings"
 )
 
@@ -222,6 +223,72 @@ func extractAuthToken(r string) string {
 	return token
 }
 
+// Data structure from listview response.
+type listview struct {
+	Columns       []Columns `json:"columns"`
+	DeveloperName string    `json:"developerName"`
+	Done          bool      `json:"done"`
+	ID            string    `json:"id"`
+	Label         string    `json:"label"`
+	Records       []Records `json:"records"`
+	Size          int       `json:"size"`
+}
+
+/*
+type Metadata struct {
+	AscendingLabel  string `json:"ascendingLabel"`
+	DescendingLabel string `json:"descendingLabel"`
+	FieldNameOrPath string `json:"fieldNameOrPath"`
+	Hidden          bool   `json:"hidden"`
+	Label           string `json:"label"`
+	Searchable      bool   `json:"searchable"`
+	SelectListItem  string `json:"selectListItem"`
+	SortDirection   string `json:"sortDirection"`
+	SortIndex       int    `json:"sortIndex"`
+	Sortable        bool   `json:"sortable"`
+	Type            string `json:"type"`
+}
+*/
+
+type Columns struct {
+	FieldNameOrPath string `json:"fieldNameOrPath"`
+	Value           string `json:"value"`
+}
+type Records struct {
+	Columns []Columns `json:"columns"`
+}
+
+func unmarshalSF(cr string) { // TODO: In the meantime, it is not returning but printing...
+
+	// Creates a variable of listview type and unmarshal caseResonse on it.
+	res := listview{}
+	json.Unmarshal([]byte(cr), &res)
+
+	for _, v := range res.Records { // Records[] is a slice, so I can iterate.
+
+		caseInfoFull := v
+
+		for index, value := range caseInfoFull.Columns { // Columns[] is a slice, so I can iterate.
+
+			caseInfoField := value
+			fmt.Printf("\nINDEX %v:", index)
+
+			vvv := reflect.ValueOf(caseInfoField)
+			// typeOfS := vvv.Type()
+
+			for i := 1; i < vvv.NumField(); i++ { // TODO: work on this...
+				fmt.Printf(" %v", vvv.Field(i).Interface())
+			}
+
+		}
+
+		fmt.Println("")
+		fmt.Println("")
+
+	}
+
+}
+
 func main() {
 
 	// Getting the credentials for authentication via enviroment variables.
@@ -251,7 +318,9 @@ func main() {
 	// Sending the request and getting a valid server response.
 	casesResponse := sendRequest(casesReq)
 
-	fmt.Println()
-	fmt.Println(casesResponse)
+	fmt.Println("====== FROM BELOW IS A WORK IN PROGRESS ==========")
+	fmt.Println("")
+
+	unmarshalSF(casesResponse)
 
 }
