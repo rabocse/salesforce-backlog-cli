@@ -266,6 +266,7 @@ func unmarshalSF(cr string) { // TODO: In the meantime, it is not returning but 
 
 	for _, v := range res.Records { // Records[] is a slice, so I can iterate.
 
+		//for _, value := range res.Records.Columns {
 		caseInfoFull := v
 
 		for index, value := range caseInfoFull.Columns { // Columns[] is a slice, so I can iterate.
@@ -278,6 +279,7 @@ func unmarshalSF(cr string) { // TODO: In the meantime, it is not returning but 
 
 			for i := 1; i < vvv.NumField(); i++ { // TODO: work on this...
 				fmt.Printf(" %v", vvv.Field(i).Interface())
+
 			}
 
 		}
