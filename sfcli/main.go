@@ -259,7 +259,7 @@ type Records struct {
 
 func unmarshalSF(cr string) { // TODO: In the meantime, it is not returning but printing...
 
-	// Creates a variable of listview type and unmarshal caseResonse on it.
+	// Create a variable of listview type and unmarshal caseResonse on it.
 	res := listview{}
 	json.Unmarshal([]byte(cr), &res)
 
@@ -271,7 +271,7 @@ func unmarshalSF(cr string) { // TODO: In the meantime, it is not returning but 
 		// Create a slice to store the "index" in the next foor loop.
 		s := make([]int, 0)
 
-		// // Create a map that will receive the "final string value."
+		// Create a map that will receive the "final string value."
 		m := make(map[int]string)
 
 		// Columns[] is a slice, so I can iterate.
@@ -279,14 +279,17 @@ func unmarshalSF(cr string) { // TODO: In the meantime, it is not returning but 
 
 			// Add "index" to the slice on each loop iteration.
 			s = append(s, index)
+			fmt.Printf("%v", s)
+			keyMap := s[index]
+			fmt.Printf("%v", keyMap)
 
-			// // Fill the map key with the "index" from the iteration and with and empty string "". The empty string will be override by the next loop below.
-			m[index] = ""
-
+			// m[0]7654321
+			// m[1]Joe Doe
+			// m[2]Docker is not working
+			// m[3]Sev4
 			//m0 := m[index]
 
 			// Print the index (which is in s[index]) of each iteration and then iterate to get the  "final string value"
-			// fmt.Printf("\n (%v)", s[index]) // OK. Removing temporarily.
 
 			fmt.Printf("\n %v", m[index])
 
@@ -296,10 +299,10 @@ func unmarshalSF(cr string) { // TODO: In the meantime, it is not returning but 
 				value2String := string(value2)
 
 				// // Take the map with key "index" and assign the "final string value"
-				m[index] = value2String
-				fmt.Printf("%v", m[index])
+				m[keyMap] = value2String
+				fmt.Printf("%v", m[keyMap])
 
-				// fmt.Printf("%v", value2String) // OK. Removing temporarily.
+				//fmt.Printf("%T", m)
 
 			}
 
