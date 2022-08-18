@@ -8,7 +8,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
-	"reflect"
 	"strings"
 )
 
@@ -264,21 +263,43 @@ func unmarshalSF(cr string) { // TODO: In the meantime, it is not returning but 
 	res := listview{}
 	json.Unmarshal([]byte(cr), &res)
 
-	for _, v := range res.Records { // Records[] is a slice, so I can iterate.
+	// Records[] is a slice, so I can iterate.
+	for _, valueRecords := range res.Records {
 
-		//for _, value := range res.Records.Columns {
-		caseInfoFull := v
+		caseInfoFull := valueRecords
 
-		for index, value := range caseInfoFull.Columns { // Columns[] is a slice, so I can iterate.
+		// Create a slice to store the "index" in the next foor loop.
+		s := make([]int, 0)
 
-			caseInfoField := value
-			fmt.Printf("\nINDEX %v:", index)
+		// // Create a map that will receive the "final string value."
+		m := make(map[int]string)
 
-			vvv := reflect.ValueOf(caseInfoField)
-			// typeOfS := vvv.Type()
+		// Columns[] is a slice, so I can iterate.
+		for index, value := range caseInfoFull.Columns {
 
-			for i := 1; i < vvv.NumField(); i++ { // TODO: work on this...
-				fmt.Printf(" %v", vvv.Field(i).Interface())
+			// Add "index" to the slice on each loop iteration.
+			s = append(s, index)
+
+			// // Fill the map key with the "index" from the iteration and with and empty string "". The empty string will be override by the next loop below.
+			m[index] = ""
+
+			//m0 := m[index]
+
+			// Print the index (which is in s[index]) of each iteration and then iterate to get the  "final string value"
+			// fmt.Printf("\n (%v)", s[index]) // OK. Removing temporarily.
+
+			fmt.Printf("\n %v", m[index])
+
+			// On each iteration, get the value.Value (underlaying string type for the Columns.Value struct)
+			for _, value2 := range value.Value {
+
+				value2String := string(value2)
+
+				// // Take the map with key "index" and assign the "final string value"
+				m[index] = value2String
+				fmt.Printf("%v", m[index])
+
+				// fmt.Printf("%v", value2String) // OK. Removing temporarily.
 
 			}
 
