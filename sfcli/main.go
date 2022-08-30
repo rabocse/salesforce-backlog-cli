@@ -247,13 +247,13 @@ func extractAuthToken(r string) string {
 
 // Data structure from listview response.
 type listview struct {
-	Columns       []Columns `json:"columns"`
-	DeveloperName string    `json:"developerName"`
-	Done          bool      `json:"done"`
-	ID            string    `json:"id"`
-	Label         string    `json:"label"`
-	Records       []Records `json:"records"`
-	Size          int       `json:"size"`
+	Columns []Columns `json:"columns"`
+	// DeveloperName string    `json:"developerName"`
+	// Done          bool      `json:"done"`
+	// ID            string    `json:"id"`
+	// Label         string    `json:"label"`
+	Records []Records `json:"records"`
+	// Size          int       `json:"size"`
 }
 
 type Columns struct {
