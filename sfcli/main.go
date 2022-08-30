@@ -314,9 +314,6 @@ func main() {
 	// Sending the request and getting a valid server response.
 	casesResponse := sendRequest(casesReq)
 
-	fmt.Println("====== FROM BELOW IS A WORK IN PROGRESS ==========")
-	fmt.Println("")
-
 	output := unmarshalSF(casesResponse)
 
 	for _, value := range output {
