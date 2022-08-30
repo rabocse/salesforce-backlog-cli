@@ -26,13 +26,35 @@ export SECK=BAD23XXXXXXXXFFF
 
 And then proceed to execute:
 
-❯ ./accessToken | jq .recentItems | grep -i CaseNUmber
-    "CaseNumber": "1234567"
-    "CaseNumber": "8910111"
-    "CaseNumber": "1213141"
-    "CaseNumber": "5161718"
-    "CaseNumber": "1920212"
-    "CaseNumber": "2232425"
+❯ go run main.go
+====== FROM BELOW IS A WORK IN PROGRESS ==========
+
+######## CASE ########
+
+Case Number: 1234567
+Client's Name: Aleks Esc
+Subject's Case: [EMEA] Monitoring Failing
+Severity: Sev4 (Low)
+Status: Closed
+Environment: Company Fake
+
+######## CASE ########
+
+Case Number: 8910111
+Client's Name: Aless Sandro
+Subject's Case: [EMEA] Possible Memory Leak
+Severity: Sev3 (Normal)
+Status: Closed
+Environment: Italy Corpo Fake
+
+######## CASE ########
+
+Case Number: 1213141
+Client's Name: Alex Rabocse
+Subject's Case: [AMER] Questions About Kubernetes
+Severity: Sev4 (Low)
+Status: Solved
+Environment: Rabocse Coporate
 
 */
 
@@ -233,22 +255,6 @@ type listview struct {
 	Size          int       `json:"size"`
 }
 
-/*
-type Metadata struct {
-	AscendingLabel  string `json:"ascendingLabel"`
-	DescendingLabel string `json:"descendingLabel"`
-	FieldNameOrPath string `json:"fieldNameOrPath"`
-	Hidden          bool   `json:"hidden"`
-	Label           string `json:"label"`
-	Searchable      bool   `json:"searchable"`
-	SelectListItem  string `json:"selectListItem"`
-	SortDirection   string `json:"sortDirection"`
-	SortIndex       int    `json:"sortIndex"`
-	Sortable        bool   `json:"sortable"`
-	Type            string `json:"type"`
-}
-*/
-
 type Columns struct {
 	FieldNameOrPath string `json:"fieldNameOrPath"`
 	Value           string `json:"value"`
@@ -263,54 +269,20 @@ func unmarshalSF(cr string) { // TODO: In the meantime, it is not returning but 
 	res := listview{}
 	json.Unmarshal([]byte(cr), &res)
 
-	// Records[] is a slice, so I can iterate.
-	for _, valueRecords := range res.Records {
-
-		caseInfoFull := valueRecords
-
-		// Create a slice to store the "index" in the next foor loop.
-		s := make([]int, 0)
-
-		// Create a map that will receive the "final string value."
-		m := make(map[int]string)
-
-		// Columns[] is a slice, so I can iterate.
-		for index, value := range caseInfoFull.Columns {
-
-			// Add "index" to the slice on each loop iteration.
-			s = append(s, index)
-			fmt.Printf("%v", s)
-			keyMap := s[index]
-			fmt.Printf("%v", keyMap)
-
-			// m[0]7654321
-			// m[1]Joe Doe
-			// m[2]Docker is not working
-			// m[3]Sev4
-			//m0 := m[index]
-
-			// Print the index (which is in s[index]) of each iteration and then iterate to get the  "final string value"
-
-			fmt.Printf("\n %v", m[index])
-
-			// On each iteration, get the value.Value (underlaying string type for the Columns.Value struct)
-			for _, value2 := range value.Value {
-
-				value2String := string(value2)
-
-				// // Take the map with key "index" and assign the "final string value"
-				m[keyMap] = value2String
-				fmt.Printf("%v", m[keyMap])
-
-				//fmt.Printf("%T", m)
-
-			}
-
+	majorMap := make(map[string][]string)
+	mySlice := make([]string, 0)
+	for k, _ := range res.Records {
+		for x, _ := range res.Records[k].Columns {
+			mySlice = append(mySlice, res.Records[k].Columns[x].Value)
 		}
+		majorMap[res.Records[k].Columns[0].Value] = mySlice
+		mySlice = nil
+	}
 
+	for _, value := range majorMap {
+		fmt.Println("######## CASE ########")
+		fmt.Printf("\nCase Number: %v\nClient's Name: %v\nSubject's Case: %v\nSeverity: %v\nStatus: %v\nEnvironment: %v\n ", value[0], value[1], value[2], value[3], value[4], value[5])
 		fmt.Println("")
-		fmt.Println("")
-
 	}
 
 }
