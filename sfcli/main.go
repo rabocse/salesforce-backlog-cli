@@ -264,7 +264,8 @@ type Records struct {
 	Columns []Columns `json:"columns"`
 }
 
-func unmarshalSF(cr string) map[string][]string { // TODO: In the meantime, it is not returning but printing...
+// unmarshalSF unmarshals the listview response from Salesforce and returns a map.
+func unmarshalSF(cr string) map[string][]string {
 
 	// Create a variable of listview type and unmarshal caseResonse on it.
 	res := listview{}
@@ -281,12 +282,6 @@ func unmarshalSF(cr string) map[string][]string { // TODO: In the meantime, it i
 	}
 
 	return majorMap
-
-	// for _, value := range majorMap {
-	// 	fmt.Println("######## CASE ########")
-	// 	fmt.Printf("\nCase Number: %v\nClient's Name: %v\nSubject's Case: %v\nSeverity: %v\nStatus: %v\nEnvironment: %v\n ", value[0], value[1], value[2], value[3], value[4], value[5])
-	// 	fmt.Println("")
-	// }
 
 }
 
