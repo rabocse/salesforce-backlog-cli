@@ -90,6 +90,7 @@ func buildURL(salesforceInstance string, resource int) string {
 	case 2:
 		// Resource: listview called "My Cases"
 		const resource string = "/services/data/v55.0/sobjects/case/listviews/00BE0000004x68gMAA/results"
+		// const resource string = "/services/data/v55.0/sobjects/case/listviews/xxxxxxxxxx/results" // Verifying if it works with other listviews. Replace xxxx for the ID listview.
 
 		// Concatenate to build the URL
 		url := fmt.Sprintf("%s%s%s", protocol, salesforceInstance, resource)
@@ -263,7 +264,7 @@ type Records struct {
 	Columns []Columns `json:"columns"`
 }
 
-func unmarshalSF(cr string) { // TODO: In the meantime, it is not returning but printing...
+func unmarshalSF(cr string) map[string][]string { // TODO: In the meantime, it is not returning but printing...
 
 	// Create a variable of listview type and unmarshal caseResonse on it.
 	res := listview{}
@@ -279,11 +280,13 @@ func unmarshalSF(cr string) { // TODO: In the meantime, it is not returning but 
 		mySlice = nil
 	}
 
-	for _, value := range majorMap {
-		fmt.Println("######## CASE ########")
-		fmt.Printf("\nCase Number: %v\nClient's Name: %v\nSubject's Case: %v\nSeverity: %v\nStatus: %v\nEnvironment: %v\n ", value[0], value[1], value[2], value[3], value[4], value[5])
-		fmt.Println("")
-	}
+	return majorMap
+
+	// for _, value := range majorMap {
+	// 	fmt.Println("######## CASE ########")
+	// 	fmt.Printf("\nCase Number: %v\nClient's Name: %v\nSubject's Case: %v\nSeverity: %v\nStatus: %v\nEnvironment: %v\n ", value[0], value[1], value[2], value[3], value[4], value[5])
+	// 	fmt.Println("")
+	// }
 
 }
 
@@ -319,6 +322,12 @@ func main() {
 	fmt.Println("====== FROM BELOW IS A WORK IN PROGRESS ==========")
 	fmt.Println("")
 
-	unmarshalSF(casesResponse)
+	output := unmarshalSF(casesResponse)
+
+	for _, value := range output {
+		fmt.Println("######## CASE ########")
+		fmt.Printf("\nCase Number: %v\nClient's Name: %v\nSubject's Case: %v\nSeverity: %v\nStatus: %v\nEnvironment: %v\n ", value[0], value[1], value[2], value[3], value[4], value[5])
+		fmt.Println("")
+	}
 
 }
