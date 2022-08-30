@@ -26,7 +26,7 @@ export SECK=BAD23XXXXXXXXFFF
 
 And then proceed to execute:
 
-❯ go run main.go
+❯ ./main
 ====== FROM BELOW IS A WORK IN PROGRESS ==========
 
 ######## CASE ########
