@@ -8,7 +8,10 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"sort"
 	"strings"
+
+	"github.com/olekukonko/tablewriter"
 )
 
 /*
@@ -265,19 +268,20 @@ type Records struct {
 }
 
 // unmarshalSF unmarshals the listview response from Salesforce and returns a map.
-func unmarshalSF(cr string) map[string][]string {
+func unmarshalSF(cr string) map[int][]string {
 
 	// Create a variable of listview type and unmarshal caseResonse on it.
 	res := listview{}
 	json.Unmarshal([]byte(cr), &res)
 
-	majorMap := make(map[string][]string)
+	majorMap := make(map[int][]string)
 	mySlice := make([]string, 0)
 	for k, _ := range res.Records {
 		for x, _ := range res.Records[k].Columns {
 			mySlice = append(mySlice, res.Records[k].Columns[x].Value)
 		}
-		majorMap[res.Records[k].Columns[0].Value] = mySlice
+		// majorMap[res.Records[k].Columns[0].Value] = mySlice
+		majorMap[k] = mySlice
 		mySlice = nil
 	}
 
@@ -285,15 +289,38 @@ func unmarshalSF(cr string) map[string][]string {
 
 }
 
-// printBacklog prints the backlog of cases of the engineer:
-func printBacklog(output map[string][]string) {
+func prettyPrintBacklog(output map[int][]string) {
 
-	for _, value := range output {
-		fmt.Println("######## CASE ########")
-		fmt.Printf("\nCase Number: %v\nClient's Name: %v\nSubject's Case: %v\nSeverity: %v\nStatus: %v\nEnvironment: %v\n ", value[0], value[1], value[2], value[3], value[4], value[5])
-		fmt.Println("")
+	s := make([]string, 0)
+
+	fmt.Println("                                                ################## SALESFORCE BACKLOG ##################")
+
+	table := tablewriter.NewWriter(os.Stdout)
+	table.SetHeader([]string{"CASE NUMBER", "CONTACT NAME", "SUBJECT", "SEVERITY", "STATUS", "ENVIRONMENT"})
+
+	keys := make([]int, 0)
+
+	// Iterate over the map and get the keys(they will not be ordered) stored in the previously created slice.
+	for k, _ := range output {
+		keys = append(keys, k)
 	}
 
+	// Ordered the slice with the keys.
+	sort.Ints(keys)
+
+	// Iterate over the ordered slice (keys) to get an ordered value from the map output.
+	for _, k := range keys {
+
+		myFullSlice := output[k]
+
+		s = myFullSlice[0:6]
+
+		table.Append(s)
+	}
+
+	table.SetRowLine(true) // Enable row line
+	table.Render()
+	s = nil
 }
 
 func main() {
@@ -329,6 +356,6 @@ func main() {
 	output := unmarshalSF(casesResponse)
 
 	// Printing the relevant info from the response.
-	printBacklog(output)
+	prettyPrintBacklog(output)
 
 }
