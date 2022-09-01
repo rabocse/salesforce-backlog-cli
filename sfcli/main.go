@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"sort"
+	"strconv"
 	"strings"
 
 	"github.com/olekukonko/tablewriter"
@@ -291,36 +292,46 @@ func unmarshalSF(cr string) map[int][]string {
 
 func prettyPrintBacklog(output map[int][]string) {
 
-	s := make([]string, 0)
+	// Create the title header of the table
+	title := tablewriter.NewWriter(os.Stdout)
+	title.SetHeader([]string{"SALESFORCE BACKLOG"})
+	title.SetRowLine(true) // Enable row line
+	title.Render()
 
-	fmt.Println("                                                ################## SALESFORCE BACKLOG ##################")
-
+	// Create the columns of the table
 	table := tablewriter.NewWriter(os.Stdout)
-	table.SetHeader([]string{"CASE NUMBER", "CONTACT NAME", "SUBJECT", "SEVERITY", "STATUS", "ENVIRONMENT"})
+	table.SetHeader([]string{" # ", "CASE NUMBER", "CONTACT NAME", "SUBJECT", "SEVERITY", "STATUS", "ENVIRONMENT"})
 
+	// Iterate over the map and get the keys(they will not be ordered) stored in the  slice (keys).
 	keys := make([]int, 0)
-
-	// Iterate over the map and get the keys(they will not be ordered) stored in the previously created slice.
 	for k, _ := range output {
 		keys = append(keys, k)
 	}
 
-	// Ordered the slice with the keys.
+	// Order keys in the slice.
 	sort.Ints(keys)
 
 	// Iterate over the ordered slice (keys) to get an ordered value from the map output.
 	for _, k := range keys {
 
-		myFullSlice := output[k]
+		// counter is used for the " # " column from the table. It needs to be incremented, otherwise it starts with zero (0).
+		// Also, since counter is an integer, it needs to be converted to string to be later appended.
+		counter := k + 1
+		part1 := []string{strconv.Itoa(counter)}
 
-		s = myFullSlice[0:6]
+		// outputSlice containes the full value from the output map[int][]string.
+		// But, we are only interested in the first 7 elements (0-6) to display in the table.
+		outputSlice := output[k]
+		part2 := outputSlice[0:6]
 
-		table.Append(s)
+		// full is created to then be displayed.
+		full := append(part1, part2...)
+		table.Append(full)
 	}
 
 	table.SetRowLine(true) // Enable row line
 	table.Render()
-	s = nil
+
 }
 
 func main() {
