@@ -31,34 +31,39 @@ export SECK=BAD23XXXXXXXXFFF
 And then proceed to execute:
 
 ❯ ./main
-====== FROM BELOW IS A WORK IN PROGRESS ==========
-
-######## CASE ########
-
-Case Number: 1234567
-Client's Name: Aleks Esc
-Subject's Case: [EMEA] Monitoring Failing
-Severity: Sev4 (Low)
-Status: Closed
-Environment: Company Fake
-
-######## CASE ########
-
-Case Number: 8910111
-Client's Name: Aless Sandro
-Subject's Case: [EMEA] Possible Memory Leak
-Severity: Sev3 (Normal)
-Status: Closed
-Environment: Italy Corpo Fake
-
-######## CASE ########
-
-Case Number: 1213141
-Client's Name: Alex Rabocse
-Subject's Case: [AMER] Questions About Kubernetes
-Severity: Sev4 (Low)
-Status: Solved
-Environment: Rabocse Coporate
++--------------------+
+| SALESFORCE BACKLOG |
++--------------------+
++-----+-------------+----------------+--------------------------------+---------------+--------+-----------------------------+
+|  #  | CASE NUMBER |  CONTACT NAME  |            SUBJECT             |   SEVERITY    | STATUS |         ENVIRONMENT         |
++-----+-------------+----------------+--------------------------------+---------------+--------+-----------------------------+
+|   1 |     1234567 | Dexter         | [AMER] Dee Dee Pushed some     | Sev1 (High)   | Open   | Dexter's Lab                |
+|     |             |                | Config and Services Now Are    |               |        |                             |
+|     |             |                | Down                           |               |        |                             |
++-----+-------------+----------------+--------------------------------+---------------+--------+-----------------------------+
+|   2 |     1234568 | Johnny Bravo   | [AMER] Need Her Contact Number | Sev1 (High)   | Open   | Johnny's Mom's House        |
+|     |             |                | ASAP!!!                        |               |        |                             |
++-----+-------------+----------------+--------------------------------+---------------+--------+-----------------------------+
+|   3 |     7654321 | Dexter         | [AMER] Quantum Scaling         | Sev3 (Normal) | Open   | Dexter's Lab                |
+|     |             |                | Sometimes Fails                |               |        |                             |
++-----+-------------+----------------+--------------------------------+---------------+--------+-----------------------------+
+|   4 |     1122334 | Hyoga C.       | [EMEA] Frozen Container is     | Sev3 (Normal) | Open   | Knights of the Zodiac       |
+|     |             |                | Leaking Memory                 |               |        |                             |
++-----+-------------+----------------+--------------------------------+---------------+--------+-----------------------------+
+|   5 |     9876543 | Master Roshi   | [APAC] KameHouse Service Not   | Sev3 (Normal) | Open   |  DBZ                        |
+|     |             |                | Accesible After Changing Cert  |               |        |                             |
++-----+-------------+----------------+--------------------------------+---------------+--------+-----------------------------+
+|   6 |     1234566 | Kakashi Hatake | [APAC] Unable to Deploy        | Sev4 (Normal) | Open   | Konoha Leaf Village         |
+|     |             |                | Rinnegan Service. Stuck In MS  |               |        |                             |
+|     |             |                | Phase 2                        |               |        |                             |
++-----+-------------+----------------+--------------------------------+---------------+--------+-----------------------------+
+|   7 |     1234555 | Aizen Sosuke.  | [APAC] PROACTIVE: Upgrade      | Sev3 (Low)    | Open   | Gotei 13 Inc                |
+|     |             |                | Shinigami's Cluster to same    |               |        |                             |
+|     |             |                | version than Espada's Cluster  |               |        |                             |
++-----+-------------+----------------+--------------------------------+---------------+--------+-----------------------------+
+|   8 |     7777777 | Tony Stark     | [EMEA] Ultron's service does   | Sev3 (Low)    | Open   | Stark Labs (Sokovia Center) |
+|     |             |                | not work as expected.          |               |        |                             |
++-----+-------------+----------------+--------------------------------+---------------+--------+-----------------------------+
 
 */
 
@@ -81,7 +86,7 @@ func buildURL(salesforceInstance string, resource int) string {
 
 	const protocol string = "https://"
 	var apiResources int = resource
-
+	``
 	switch apiResources {
 
 	case 1:
