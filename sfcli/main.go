@@ -86,7 +86,7 @@ func buildURL(salesforceInstance string, resource int) string {
 
 	const protocol string = "https://"
 	var apiResources int = resource
-	``
+
 	switch apiResources {
 
 	case 1:
