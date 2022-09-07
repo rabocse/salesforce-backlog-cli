@@ -1,4 +1,4 @@
-# salesforce-backlog-cli (dev3.0 branch)
+# salesforce-backlog-cli 
 
 
 
@@ -61,9 +61,9 @@ And then proceed to execute:
 
 - The output is a JSON object containing different elements. Among those, the access token is present.
 
-- The access token value is parsed and extracted to then be used in the header for the data request.
+- The access token value is parsed and extracted to then be used in a HTTP header for the data request.
 
-- The listview (Salesforce resource) is queried and succesfully unmarshalled. The values are currently printed (not returned).
+- The listview (Salesforce resource) is queried and succesfully unmarshalled to then be printed in a table format.
 
 
 ## Next Steps
@@ -71,10 +71,10 @@ And then proceed to execute:
 - Input for the script to be accepted via enviroment variables. [DONE]
 - Parse JSON output and extract only the "access token" value. [DONE]
 - Pass the access token value to next section of the script. [DONE]
+- Avoid the usage of external tools (jq and/or grep), build the presentation of data in the source code. (Table format) [DONE]
 - Modify the downloaded resource (currently sObject/case) to a resource that provides the list of active cases from the engineer.
-- Avoid the usage of external tools (jq and/or grep), build the presentation of data in the source code.
-- Allow the user to specify a case ID to get additional information about it.
 - Containerize the application.
+- Allow the user to specify a case ID to get additional information about it.
 - Get the attachment from Salesforce:
     - Direct attachments from Salesforce.
     - Attachments from third party integrated tool like S-Drive.
