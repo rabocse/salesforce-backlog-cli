@@ -1,4 +1,4 @@
-module salesforce-backlog-cli
+module github.com/rabocse/salesforce-backlog-cli
 
 go 1.18
 
