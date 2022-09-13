@@ -15,7 +15,7 @@ import (
 	"github.com/olekukonko/tablewriter"
 )
 
-// envHandler gets the needed enviroment variables: EMAIL, PASS, SF, CLID, CLSE, SECK.
+// envHandler gets the needed environment variables: EMAIL, PASS, SF, CLID, CLSE, SECK.
 func EnvHandler() (sfi, user, pass, clid, clse, seck string) {
 
 	sfi = os.Getenv("SF")
@@ -272,7 +272,7 @@ func PrettyPrintBacklog(output map[int][]string) {
 		counter := k + 1
 		part1 := []string{strconv.Itoa(counter)}
 
-		// outputSlice containes the full value from the output map[int][]string.
+		// outputSlice contains the full value from the output map[int][]string.
 		// But, we are only interested in the first 7 elements (0-6) to display in the table.
 		outputSlice := output[k]
 		part2 := outputSlice[0:6]

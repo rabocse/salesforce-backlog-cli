@@ -8,7 +8,7 @@ import (
 
 /*
 
-The current execution is succesful. First the user must set the expected environment variables on the local terminal. For example:
+The current execution is successful. First the user must set the expected environment variables on the local terminal. For example:
 
 ---
 ❯ export EMAIL=rabocse@mydomain.com
@@ -60,7 +60,7 @@ And then proceed to execute:
 
 func main() {
 
-	// Getting the credentials for authentication via enviroment variables.
+	// Getting the credentials for authentication via environment variables.
 	salesforceInstance, username, password, clientID, clientSecret, SecurityKey := sftool.EnvHandler()
 
 	// Building Salesforce URL for authentication purposes.
