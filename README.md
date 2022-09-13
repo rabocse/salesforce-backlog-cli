@@ -1,6 +1,16 @@
 # salesforce-backlog-cli 
 
+Golang script for interacting with Salesforce API. 
 
+The script is meant to be used mainly for Salesforce users instead of admins.
+
+The drive behind this was/is to automate repetitive and tedious tasks like:
+
+- Reviewing of backlog of cases.
+- Retrieval of case information.
+- Retrieval of attachments.
+
+To acomplish such, the script is executed as a CLI tool.
 
 ## Current State
 
@@ -57,27 +67,34 @@ And then proceed to execute:
 
 ```
 
-- The script reads the enviroment variables (EMAIL, PASS, SF, CLID, CLSE, SECK) from the user's terminal and uses them as input.
+## Script and Data Flow
 
-- The output is a JSON object containing different elements. Among those, the access token is present.
+- The script reads the enviroment variables (EMAIL, PASS, SF, CLID, CLSE, SECK) from the user's terminal.
 
-- The access token value is parsed and extracted to then be used in a HTTP header for the data request.
+- Such enviroment variables are used to authenticate against the Salesforce instance and get an access token.
+
+- Once the access token is properly downloaded and parsed, then it is used in a HTTP header for the data request.
 
 - The listview (Salesforce resource) is queried and succesfully unmarshalled to then be printed in a table format.
 
 
-## Next Steps
+
+## Roadmap (Next Steps)
 
 - Input for the script to be accepted via enviroment variables. [DONE]
 - Parse JSON output and extract only the "access token" value. [DONE]
 - Pass the access token value to next section of the script. [DONE]
 - Avoid the usage of external tools (jq and/or grep), build the presentation of data in the source code. (Table format) [DONE]
+- Create "Go modules" and share the interim state of the script. [DONE]
 - Modify the downloaded resource (currently sObject/case) to a resource that provides the list of active cases from the engineer.
 - Containerize the application.
 - Allow the user to specify a case ID to get additional information about it.
 - Get the attachment from Salesforce:
     - Direct attachments from Salesforce.
     - Attachments from third party integrated tool like S-Drive.
+
+
+NOTE: Roadmad is subject to changes.
 
 
 
