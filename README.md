@@ -27,6 +27,7 @@ NOTE: Source code and compiled binary are available in case of not having/prefer
 ```
 docker run -it rabocse/salesforce-backlog-cli
 ```
+<br/>
 
 2. Paste Salesforce Credentials in the container CLI
    
@@ -38,6 +39,7 @@ export CLID=xxxxxxxyyyyyyyyyyaaaaaaabbbbbbbbdddddddddddd22211111
 export CLSE=11111112222222333333344444aaaaaccccc1112222222
 export SECK=BAD23XXXXXXXXFFF
 ```
+<br/>
 
 3. Get your backlog of cases:
 ```
@@ -124,12 +126,12 @@ Once, the environment variables are set, the tool is ready to be executed:
 
 # Progress and Roadmap
 
-- Input for the script to be accepted via enviroment variables. [DONE]
-- Parse JSON output and extract only the "access token" value. [DONE]
-- Pass the access token value to next section of the script. [DONE]
-- Avoid the usage of external tools (jq and/or grep), build the presentation of data in the source code. (Table format) [DONE]
-- Create "Go modules" and share the interim state of the script. [DONE]
-- Containerize the application. [DONE]
+- Input for the script to be accepted via enviroment variables. __[DONE]__
+- Parse JSON output and extract only the "access token" value. __[DONE]__
+- Pass the access token value to next section of the script. __[DONE]__
+- Avoid the usage of external tools (jq and/or grep), build the presentation of data in the source code. (Table format) __[DONE]__
+- Create "Go modules" and share the interim state of the script. __[DONE]__
+- Containerize the application. __[DONE]__
 - Modify the downloaded resource (currently sObject/case) to a resource that provides the list of active cases from the engineer.
 - Allow the user to specify a case ID to get additional information about it.
 - Get the attachment from Salesforce:
