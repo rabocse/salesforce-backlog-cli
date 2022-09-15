@@ -63,7 +63,7 @@ export SECK=BAD23XXXXXXXXFFF
 
 The tool successfully requests an access token to the Salesforce Instace to authenticate and then downloads the data from sObjects/case resource ("/services/data/v55.0/sobjects/case").
 
-First, the user must the needed credentials to authenticate against the Salesforce API. For such, enviroment variables are passed in the container CLI.
+First, the user must set the needed credentials to authenticate against the Salesforce API. For such, enviroment variables are passed in the container CLI.
 
 Once, the environment variables are set, the tool is ready to be executed:
 
