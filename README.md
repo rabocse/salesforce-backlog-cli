@@ -1,25 +1,37 @@
-# salesforce-backlog-cli 
+# Salesforce Backlog CLI 
 
 Golang script for interacting with Salesforce API. 
 
 The script is meant to be used mainly for Salesforce users instead of admins.
 
-The drive behind this was/is to automate repetitive and tedious tasks like:
+The drive behind this was/is to automate repetitive and tedious tasks within the technical support engineer role like:
 
-- Reviewing of backlog of cases.
-- Retrieval of case information.
-- Retrieval of attachments.
+- Reviewing backlog of cases via Salesforce GUI.
+- Retrieving case information via Salesforce GUI.
+- Retrieving attachments via Salesforce GUI.
 
 To acomplish such, the script is executed as a CLI tool.
 
-## Current State
+# Requirements
 
-The script successfully requests an access token to the Salesforce Instace to authenticate and then downloads the data from the sObjects/case resource ("/services/data/v55.0/sobjects/case").
+- Internet connection.
+- API Salesforce access.
+- Docker (Recommended script execution)
 
-First the user must set the expected enviroment variables on the local terminal. For example:
+NOTE: Source code and compiled binary are available in case of not having/prefering Docker. However, the execution is recommended via Docker.
 
+
+# TLDR (Execution with Docker)
+
+1. Get the CLI tool.
 ```
-❯ export EMAIL=rabocse@mydomain.com
+docker run -it rabocse/salesforce-backlog-cli
+```
+
+2. Paste Salesforce Credentials in the container CLI
+   
+```
+export EMAIL=rabocse@mydomain.com
 export PASS=MyFakePassword123
 export SF=myfake.sf.instance.salesforce.com
 export CLID=xxxxxxxyyyyyyyyyyaaaaaaabbbbbbbbdddddddddddd22211111
@@ -27,7 +39,31 @@ export CLSE=11111112222222333333344444aaaaaccccc1112222222
 export SECK=BAD23XXXXXXXXFFF
 ```
 
-And then proceed to execute:
+3. Get your backlog of cases:
+```
+./main
+```
+
+# Contents
+
+- [Salesforce Backlog CLI](#salesforce-backlog-cli)
+- [Requirements](#requirements)
+- [TLDR (Execution with Docker)](#tldr-execution-with-docker)
+- [Contents](#contents)
+- [Current State](#current-state)
+- [Script's Data Flow](#scripts-data-flow)
+- [Caveats](#caveats)
+- [Progress and Roadmap](#progress-and-roadmap)
+
+
+
+# Current State
+
+The tool successfully requests an access token to the Salesforce Instace to authenticate and then downloads the data from sObjects/case resource ("/services/data/v55.0/sobjects/case").
+
+First, the user must the needed credentials to authenticate against the Salesforce API. For such, enviroment variables are passed in the container CLI.
+
+Once, the environment variables are set, the tool is ready to be executed:
 
 ```
 ❯ ./main
@@ -67,7 +103,7 @@ And then proceed to execute:
 
 ```
 
-## Script and Data Flow
+# Script's Data Flow
 
 - The script reads the enviroment variables (EMAIL, PASS, SF, CLID, CLSE, SECK) from the user's terminal.
 
@@ -78,23 +114,30 @@ And then proceed to execute:
 - The listview (Salesforce resource) is queried and succesfully unmarshalled to then be printed in a table format.
 
 
+# Caveats
 
-## Roadmap (Next Steps)
+- The [listview ID](https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/resources_listviews.htm) is currently hardcoded within sftool.BuildURL function. 
+  
+- The Salesforce API version is also hardcoded to v55.0. 
+
+
+
+# Progress and Roadmap
 
 - Input for the script to be accepted via enviroment variables. [DONE]
 - Parse JSON output and extract only the "access token" value. [DONE]
 - Pass the access token value to next section of the script. [DONE]
 - Avoid the usage of external tools (jq and/or grep), build the presentation of data in the source code. (Table format) [DONE]
 - Create "Go modules" and share the interim state of the script. [DONE]
+- Containerize the application. [DONE]
 - Modify the downloaded resource (currently sObject/case) to a resource that provides the list of active cases from the engineer.
-- Containerize the application.
 - Allow the user to specify a case ID to get additional information about it.
 - Get the attachment from Salesforce:
     - Direct attachments from Salesforce.
     - Attachments from third party integrated tool like S-Drive.
+- Add logic bussiness or a feature to specify the listview ID to be retrieved. (See caveat for reference)
 
-
-NOTE: Roadmad is subject to changes.
+__NOTE:__ Roadmad is subject to changes.
 
 
 
