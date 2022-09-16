@@ -29,7 +29,7 @@ docker run -it rabocse/salesforce-backlog-cli
 ```
 <br/>
 
-2. In the container CLIP, proceed to paste Salesforce Credentials: email, password, salesforce instance, client ID, client Secret and security key. 
+2. In the container CLI, proceed to paste Salesforce Credentials: email, password, salesforce instance, client ID, client Secret and security key. 
    
 ```
 export EMAIL=rabocse@mydomain.com
