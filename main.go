@@ -8,7 +8,7 @@ import (
 
 /*
 
-The current execution is successful. First the user must set the expected environment variables on the local terminal. For example:
+The current execution is successful. First the user must set the expected environment variables (email, password, salesforceInstance, clientID, client Secret, SecurityKey) on the local terminal. For example:
 
 ---
 ❯ export EMAIL=rabocse@mydomain.com
