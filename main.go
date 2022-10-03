@@ -61,13 +61,13 @@ And then proceed to execute:
 func main() {
 
 	// Getting the credentials for authentication via environment variables.
-	salesforceInstance, username, password, clientID, clientSecret, SecurityKey := sftool.EnvHandler()
+	data := sftool.EnvHandler()
 
 	// Building Salesforce URL for authentication purposes.
-	authURL := sftool.BuildURL(salesforceInstance, 1)
+	authURL := sftool.BuildURL(data.SalesforceInstance, 1)
 
 	// Parsing the credentials.
-	authPayload := sftool.CraftPayload(username, password, clientID, clientSecret, SecurityKey, "auth")
+	authPayload := sftool.CraftPayload(data.Username, data.Password, data.ClientID, data.ClientSecret, data.SecurityKey, "auth")
 
 	// Crafting a valid HTTPS request with TLS ignore for authentication.
 	authReq := sftool.CraftRequest(http.MethodPost, authURL, "no-token", authPayload)
@@ -78,8 +78,11 @@ func main() {
 	// Extracting the access token value from the server response.
 	accessToken := sftool.ExtractAuthToken(authResponse)
 
+	// CLI ...
+	// cli.Cli()
+
 	// Building the URL to query the data.
-	casesURL := sftool.BuildURL(salesforceInstance, 2)
+	casesURL := sftool.BuildURL(data.SalesforceInstance, 2)
 
 	// Crafting a valid HTTPS request with TLS ignore.
 	casesReq := sftool.CraftRequest(http.MethodGet, casesURL, accessToken, nil)
