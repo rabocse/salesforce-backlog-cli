@@ -15,17 +15,33 @@ import (
 	"github.com/olekukonko/tablewriter"
 )
 
+type SfCred struct {
+	SalesforceInstance, Username, Password, ClientID, ClientSecret, SecurityKey string
+}
+
 // envHandler gets the needed environment variables: EMAIL, PASS, SF, CLID, CLSE, SECK.
-func EnvHandler() (sfi, user, pass, clid, clse, seck string) {
+// func EnvHandler() (sfi, user, pass, clid, clse, seck string) {
 
-	sfi = os.Getenv("SF")
-	user = os.Getenv("EMAIL")
-	pass = os.Getenv("PASS")
-	clid = os.Getenv("CLID")
-	clse = os.Getenv("CLSE")
-	seck = os.Getenv("SECK")
+func EnvHandler() SfCred {
 
-	return sfi, user, pass, clid, clse, seck
+	data := SfCred{
+
+		SalesforceInstance:  os.Getenv("SF"),
+		Username: os.Getenv("EMAIL"),
+		Password: os.Getenv("PASS"),
+		 ClientID:  os.Getenv("CLID"),
+		  ClientSecret: os.Getenv("CLSE"),
+		   SecurityKey: os.Getenv("SECK")
+	}
+	// sfi = os.Getenv("SF")
+	// user = os.Getenv("EMAIL")
+	// pass = os.Getenv("PASS")
+	// clid = os.Getenv("CLID")
+	// clse = os.Getenv("CLSE")
+	// seck = os.Getenv("SECK")
+
+	//return sfi, user, pass, clid, clse, seck
+	return data
 
 }
 
