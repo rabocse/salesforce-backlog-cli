@@ -26,13 +26,12 @@ func EnvHandler() SfCred {
 
 	data := SfCred{
 
-		SalesforceInstance:  os.Getenv("SF"),
-		Username: os.Getenv("EMAIL"),
-		Password: os.Getenv("PASS"),
-		 ClientID:  os.Getenv("CLID"),
-		  ClientSecret: os.Getenv("CLSE"),
-		   SecurityKey: os.Getenv("SECK")
-	}
+		SalesforceInstance: os.Getenv("SF"),
+		Username:           os.Getenv("EMAIL"),
+		Password:           os.Getenv("PASS"),
+		ClientID:           os.Getenv("CLID"),
+		ClientSecret:       os.Getenv("CLSE"),
+		SecurityKey:        os.Getenv("SECK")}
 	// sfi = os.Getenv("SF")
 	// user = os.Getenv("EMAIL")
 	// pass = os.Getenv("PASS")
